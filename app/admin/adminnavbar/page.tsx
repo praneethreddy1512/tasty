@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Home, ShoppingCart, LogOut } from 'lucide-react';
 
-const Navbar = () => {
+const AdminNavbar = () => {
   const [cartQuantity, setCartQuantity] = useState(0);
   const [animate, setAnimate] = useState(false);
 
@@ -16,7 +16,7 @@ const Navbar = () => {
 
       if (totalQty > 0) {
         setAnimate(true);
-        setTimeout(() => setAnimate(false), 500); // remove bounce after 500ms
+        setTimeout(() => setAnimate(false), 500);
       }
     };
 
@@ -40,25 +40,13 @@ const Navbar = () => {
       </div>
 
       <nav className="flex items-center gap-6 relative">
-        <Link href="/user/home" className="text-gray-700 hover:text-orange-500 transition duration-200">
+        <Link href="/admin/home" className="text-gray-700 hover:text-orange-500 transition duration-200">
           <Home className="w-6 h-6" />
         </Link>
 
-        <Link href="/user/cart" className="relative">
-          <ShoppingCart className="w-6 h-6 text-gray-700 hover:text-orange-500 transition duration-200" />
-          
-          {cartQuantity > 0 && (
-            <span
-              className={`absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5 ${
-                animate ? 'animate-bounce' : ''
-              }`}
-            >
-              {cartQuantity}
-            </span>
-          )}
-        </Link>
+       
 
-        <Link href="/user/signin">
+        <Link href="/admin/signin">
           <button className="border p-2 rounded text-white bg-orange-500 hover:text-orange-500 hover:bg-white transition duration-200">
             <LogOut className="w-5 h-5" />
           </button>
@@ -68,4 +56,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default AdminNavbar;

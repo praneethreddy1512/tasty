@@ -2,6 +2,9 @@
 
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Navbar from '@/app/navbar/page';
+import Footer from '@/app/footer/page';
 
 interface CartItem {
   id: string;
@@ -13,6 +16,7 @@ interface CartItem {
 
 const Cart: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const storedCart = localStorage.getItem('cart');
@@ -46,29 +50,37 @@ const Cart: React.FC = () => {
     updateCart(updated);
   };
 
+  const handlePlaceOrder = () => {
+    
+    router.push('/user/payment');
+  };
+
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   return (
+    <>
+    <Navbar/>
     <div className="p-6">
       <h1 className="text-3xl font-bold mb-4">Your Cart</h1>
       {cart.length === 0 ? (
-     <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
-      <img
-        src="https://cdn-icons-png.flaticon.com/512/2762/2762885.png"
-        alt="No Orders"
-        width={300}
-        height={300}
-      />
-      <h2 className="text-2xl font-semibold mt-4">No Orders Yet!</h2>
-      <p className="text-gray-600 mt-2">
-        Your cart is empty. Add something from the menu.
-      </p>
-      <Link href="/user/home">
-      <button className="mt-4 px-5 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition">
-        Order Now
-      </button>
-      </Link>
-    </div>      ) : (
+        <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/2762/2762885.png"
+            alt="No Orders"
+            width={300}
+            height={300}
+          />
+          <h2 className="text-2xl font-semibold mt-4">No Orders Yet!</h2>
+          <p className="text-gray-600 mt-2">
+            Your cart is empty. Add something from the menu.
+          </p>
+          <Link href="/user/home">
+            <button className="mt-4 px-5 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition">
+              Order Now
+            </button>
+          </Link>
+        </div>
+      ) : (
         <>
           {cart.map(item => (
             <div key={item.id} className="flex items-center gap-4 mb-6 p-4 border rounded">
@@ -96,13 +108,20 @@ const Cart: React.FC = () => {
             </div>
           ))}
           <div>
-          <hr className="my-4" />
-          <h2 className="text-2xl font-bold">Total: ₹{total}</h2>
-          <Link href="/user/payment"><button className='bg-amber-600 text-white rounded-md p-2 m-2'>Place order</button></Link>
+            <hr className="my-4" />
+            <h2 className="text-2xl font-bold">Total: ₹{total}</h2>
+            <button
+              onClick={handlePlaceOrder}
+              className="bg-amber-600 text-white rounded-md p-2 m-2"
+            >
+              Place order
+            </button>
           </div>
         </>
       )}
     </div>
+    <Footer/>
+    </>
   );
 };
 
