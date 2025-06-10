@@ -36,10 +36,19 @@ export default function AdminHome() {
   const [updateImage, setUpdateImage] = useState<File | null>(null);
   const [menuVisible, setMenuVisible] = useState<string | null>(null);
 
-  const fetchRestaurants = async () => {
+  const [loading, setLoading] = useState(true);
+
+
+ const fetchRestaurants = async () => {
+  try {
+    setLoading(true);
     const res = await axios.get<Restaurant[]>('/api/admin');
     setRestaurants(res.data);
-  };
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   useEffect(() => {
     fetchRestaurants();
@@ -56,7 +65,6 @@ export default function AdminHome() {
   const handleAddRestaurant = async () => {
     if (!addForm.name || !addForm.rating || !selectedImage) return alert("Fill all fields");
     const imgurl = await convertToBase64(selectedImage);
-
     await axios.post('/api/admin', {
       name: addForm.name,
       imgurl,
@@ -110,16 +118,10 @@ export default function AdminHome() {
     const key = `${resId}-${food._id}`;
     const updated = foodForms[key];
 
-    const finalFood = {
-      ...food,
-      ...updated,
-      imgurl: updated?.imgurl || food.imgurl,
-    };
-
-    if (!finalFood.name || !finalFood.price || !finalFood.rating || !finalFood.imgurl) return;
+    if (!updated || !updated.name || !updated.price || !updated.rating || !updated.imgurl) return;
 
     try {
-      await axios.put(`/api/admin/${resId}/menu/${food._id}`, finalFood);
+      await axios.put(`/api/admin/${resId}/menu/${food._id}`, updated);
       setShowUpdateFoodForms((prev) => ({ ...prev, [key]: false }));
       fetchRestaurants();
     } catch (error) {
@@ -158,7 +160,6 @@ export default function AdminHome() {
           {showAddForm ? 'Cancel' : 'Add Restaurant'}
         </motion.button>
 
-        {/* Restaurant Update Form */}
         {updateRestaurant && (
           <div className="bg-gray-100 p-4 rounded my-4 max-w-md">
             <h2 className="text-lg font-semibold mb-2">Update Restaurant</h2>
@@ -190,17 +191,23 @@ export default function AdminHome() {
               </button>
             </div>
           </div>
+
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {restaurants.map((res) => (
-            <motion.div
+        {loading ? (
+  <div className="flex justify-center items-center h-64">
+    <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-orange-500 border-opacity-100"></div>
+  </div>
+) : (
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    {restaurants.map((res) => (
+      <motion.div
               key={res._id}
               className="bg-white border rounded shadow p-3 relative group hover:scale-105 transition-transform"
             >
               <img src={res.imgurl} alt={res.name} className="w-full h-48 object-cover rounded mb-2" />
               <h3 className="text-lg font-semibold">{res.name}</h3>
-              <p>⭐ {res.rating}</p>
+              <p className='bg-green-700 text-white w-15 rounded'>⭐ {res.rating}</p>
 
               <div className="absolute top-2 right-2 hidden group-hover:flex flex-col gap-1 bg-white p-2 rounded shadow z-10">
                 <button onClick={() => { setUpdateRestaurant(res); setUpdateImage(null); }}><Pencil className="text-orange-500 hover:scale-110" /></button>
@@ -227,6 +234,8 @@ export default function AdminHome() {
                 <div className="mt-3 text-sm">
                   {res.menu.map((food) => {
                     const key = `${res._id}-${food._id}`;
+                    const defaultFood = foodForms[key] || food;
+
                     return (
                       <motion.div
                         key={food._id}
@@ -236,7 +245,15 @@ export default function AdminHome() {
                           <span>{food.name} - ₹{food.price} ⭐{food.rating}</span>
                           <div className="flex gap-2">
                             <button onClick={() => {
-                              setFoodForms((prev) => ({ ...prev, [key]: food }));
+                              setFoodForms((prev) => ({
+                                ...prev,
+                                [key]: {
+                                  name: food.name,
+                                  price: food.price,
+                                  rating: food.rating,
+                                  imgurl: food.imgurl,
+                                }
+                              }));
                               setShowUpdateFoodForms((prev) => ({ ...prev, [key]: true }));
                             }}><Pencil className="text-blue-500 hover:scale-110" /></button>
                             <button onClick={() => handleDeleteFood(res._id, food._id)}><Trash2 className="text-red-500 hover:scale-110" /></button>
@@ -244,9 +261,9 @@ export default function AdminHome() {
                         </div>
                         {showUpdateFoodForms[key] && (
                           <div className="bg-gray-100 p-2 rounded mt-1">
-                            <input value={foodForms[key]?.name || ''} placeholder="Name" className="w-full p-1 mb-1 border" onChange={(e) => setFoodForms((prev) => ({ ...prev, [key]: { ...prev[key], name: e.target.value } }))} />
-                            <input value={foodForms[key]?.price || ''} type="number" placeholder="Price" className="w-full p-1 mb-1 border" onChange={(e) => setFoodForms((prev) => ({ ...prev, [key]: { ...prev[key], price: parseFloat(e.target.value) } }))} />
-                            <input value={foodForms[key]?.rating || ''} type="number" placeholder="Rating" className="w-full p-1 mb-1 border" onChange={(e) => setFoodForms((prev) => ({ ...prev, [key]: { ...prev[key], rating: parseFloat(e.target.value) } }))} />
+                            <input value={defaultFood.name} placeholder="Name" className="w-full p-1 mb-1 border" onChange={(e) => setFoodForms((prev) => ({ ...prev, [key]: { ...prev[key], name: e.target.value } }))} />
+                            <input value={defaultFood.price} type="number" placeholder="Price" className="w-full p-1 mb-1 border" onChange={(e) => setFoodForms((prev) => ({ ...prev, [key]: { ...prev[key], price: parseFloat(e.target.value) } }))} />
+                            <input value={defaultFood.rating} type="number" placeholder="Rating" className="w-full p-1 mb-1 border" onChange={(e) => setFoodForms((prev) => ({ ...prev, [key]: { ...prev[key], rating: parseFloat(e.target.value) } }))} />
                             <input type="file" accept="image/*" className="w-full mb-1" onChange={(e) => handleFoodImageChange(e, res._id, food._id)} />
                             <button onClick={() => handleUpdateFood(res._id, food)} className="bg-green-500 text-white py-1 px-3 rounded w-full">Save</button>
                           </div>
@@ -256,11 +273,14 @@ export default function AdminHome() {
                   })}
                 </div>
               )}
-            </motion.div>
-          ))}
-        </div>
+            </motion.div>     
+    ))}
+  </div>
+)}      
       </div>
       <Footer />
     </>
   );
 }
+
+

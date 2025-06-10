@@ -79,7 +79,7 @@ export default function SigninPage() {
                 Submit
               </button>
             </form>
-            <p className="text-xs text-gray-500 mt-4">
+            <p className=" text-gray-500 mt-4 text-xl text-center">
               Don't have an account?{' '}
               <Link href="/user/signup" className="text-orange-500 hover:underline">
                 Sign up
