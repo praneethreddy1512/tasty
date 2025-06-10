@@ -17,7 +17,7 @@ export const authOptions: NextAuthOptions = {
         if (!credentials?.username || !credentials?.password) return null;
 
         await Db();
-        const user = await LoginModel.findOne({ username: credentials.username });
+        const user = await LoginModel.findOne({ username: credentials.username }).exec();
         if (!user) return null;
 
         if (user.password != credentials.password) return null;

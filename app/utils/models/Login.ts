@@ -31,8 +31,8 @@ const RestaurantSchema = new mongoose.Schema({
 
 const RestaurantModel: any = mongoose.models.Restaurant || mongoose.model('Restaurant', RestaurantSchema);
 
-const LoginModel = mongoose.models.login || mongoose.model("login", Loginschema);
+const LoginModel :any= mongoose.models.login || mongoose.model("login", Loginschema);
 
-const AdminModel = mongoose.models.admin || mongoose.model("admin", Adminschema);
+const AdminModel :any= mongoose.models.admin || mongoose.model("admin", Adminschema);
 
 export {LoginModel,RestaurantModel,AdminModel};

@@ -4,17 +4,25 @@ import Db from '@/app/utils/config/db';
 
 export async function POST(req: NextRequest) {
   try {
-    Db(); 
+    await Db();
+
     const body = await req.json();
-    const user = await LoginModel.create({
-      username: body.username,
-      email: body.email,
-      password: body.password,
-    });
+
+    if (!body.username || !body.email || !body.password) {
+      return NextResponse.json({ message: "Missing fields" }, { status: 400 });
+    }
+
+    const user = await LoginModel.create([
+      {
+        username: body.username,
+        email: body.email,
+        password: body.password,
+      }
+    ]);
 
     return NextResponse.json({ message: "Signup successful", user });
   } catch (error) {
     console.error("Signup error:", error);
-    return NextResponse.json({ message: "Signup failed", error });
+    return NextResponse.json({ message: "Signup failed" }, { status: 500 });
   }
 }

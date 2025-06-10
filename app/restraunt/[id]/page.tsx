@@ -137,7 +137,7 @@ export default function RestaurantPage() {
                         : 'bg-orange-500 hover:bg-orange-600'
                     }`}
                   >
-                    {isInCart(item.name) ? 'Added ✅' : 'ADD'}
+                    {isInCart(item.name) ? 'Added ' : 'ADD'}
                   </button>
                 </div>
               </div>

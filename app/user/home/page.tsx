@@ -80,7 +80,7 @@ export default function Home() {
                   <img
                     src={r.imgurl}
                     alt={r.name}
-                    className="w-full h-48 object-cover rounded-t-xl"
+                    className="w-full h-48 object-cover p-2 rounded-xl"
                   />
                   <div className="p-4">
                     <div className="flex justify-between items-center">
