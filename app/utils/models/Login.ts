@@ -29,7 +29,7 @@ const RestaurantSchema = new mongoose.Schema({
   menu: [FoodSchema],
 });
 
-const RestaurantModel = mongoose.models.Restaurant || mongoose.model('Restaurant', RestaurantSchema);
+const RestaurantModel: any = mongoose.models.Restaurant || mongoose.model('Restaurant', RestaurantSchema);
 
 const LoginModel = mongoose.models.login || mongoose.model("login", Loginschema);
 
