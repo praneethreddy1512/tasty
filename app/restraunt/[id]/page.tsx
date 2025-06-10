@@ -111,37 +111,40 @@ export default function RestaurantPage() {
           </div>
         ) : (
           <div className="flex flex-col space-y-8">
-            {data.menu.map((item, index) => (
-              <div
-                key={index}
-                className="flex justify-between items-start border-b pb-6"
-              >
-                <div className="flex-1 pr-4">
-                  <h2 className="text-xl font-semibold">{item.name}</h2>
-                  <p className="text-gray-700 font-medium mt-1">₹{item.price}</p>
-                  <p className="text-white text-sm mt-1 p-1 rounded w-15 bg-green-700">⭐ {item.rating}</p>
-                </div>
+           {data.menu.map((item, index) => (
+  <div
+    key={index}
+    className="flex justify-between items-start border-b pb-6 mx-4" 
+  >
+    <div className="flex-1 pr-4 ml-4"> 
+      <h2 className="text-xl font-semibold mb-2">{item.name}</h2>
+      <p className="text-gray-700 font-medium mt-1">₹{item.price}</p>
+      <p className="text-white text-sm mt-1 p-1 rounded w-15 bg-green-700">⭐ {item.rating}</p>
+    </div>
 
-                <div className="relative w-36 flex flex-col items-center">
-                  <img
-                    src={item.imgurl}
-                    alt={item.name}
-                    className="w-32 h-24 rounded-md object-cover"
-                  />
-                  <button
-                    onClick={() => addToCart(item)}
-                    disabled={isInCart(item.name)}
-                    className={`mt-2 px-5 py-1 text-white text-sm rounded-lg font-semibold ${
-                      isInCart(item.name)
-                        ? 'bg-green-500 cursor-not-allowed'
-                        : 'bg-orange-500 hover:bg-orange-600'
-                    }`}
-                  >
-                    {isInCart(item.name) ? 'Added ' : 'ADD'}
-                  </button>
-                </div>
-              </div>
-            ))}
+    <div className="flex flex-col items-center justify-center space-y-3 mr-4"> 
+      <img
+        src={item.imgurl}
+        alt={item.name}
+        className="w-32 h-24 rounded-md object-cover" 
+      />
+      <button
+        onClick={() => addToCart(item)}
+        disabled={isInCart(item.name)}
+        className={`px-5 py-1 text-white text-sm rounded-lg font-semibold ${
+          isInCart(item.name)
+            ? 'bg-green-500 cursor-not-allowed'
+            : 'bg-orange-500 hover:bg-orange-600'
+        }`}
+      >
+        {isInCart(item.name) ? 'Added ' : 'ADD'}
+      </button>
+    </div>
+  </div>
+))}
+
+
+
           </div>
         )}
       </div>

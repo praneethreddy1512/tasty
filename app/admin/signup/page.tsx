@@ -33,7 +33,7 @@ export default function SignupPage() {
         setMessage('Signup successful!');
         setTimeout(() => {
           router.push('/user/signin');
-        }, 1000); // Simulate loader time
+        }, 1000); 
       } else if (data.message && data.message.includes('duplicate key')) {
         setMessage('Email already exists. Please use a different email.');
         setLoading(false);

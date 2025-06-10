@@ -82,41 +82,56 @@ const Cart: React.FC = () => {
         </div>
       ) : (
         <>
-          {cart.map(item => (
-            <div key={item.id} className="flex items-center gap-4 mb-6 p-4 border rounded">
-              <img src={item.imgurl} alt={item.name} className="w-24 h-24 object-cover rounded" />
-              <div className="flex-1">
-                <h2 className="text-xl font-semibold">{item.name}</h2>
-                <p>₹{item.price} each</p>
-                <div className="flex items-center gap-2 mt-2">
-                  <button
-                    onClick={() => decreaseQuantity(item.id)}
-                    className="px-3 py-1 bg-red-500 text-white rounded"
-                  >
-                    -
-                  </button>
-                  <span className="text-lg font-semibold">{item.quantity}</span>
-                  <button
-                    onClick={() => increaseQuantity(item.id)}
-                    className="px-3 py-1 bg-green-500 text-white rounded"
-                  >
-                    +
-                  </button>
-                </div>
-                <p className="mt-1">Subtotal: ₹{item.price * item.quantity}</p>
-              </div>
-            </div>
-          ))}
-          <div>
-            <hr className="my-4" />
-            <h2 className="text-2xl font-bold">Total: ₹{total}</h2>
-            <button
-              onClick={handlePlaceOrder}
-              className="bg-amber-600 text-white rounded-md p-2 m-2"
-            >
-              Place order
-            </button>
-          </div>
+        {cart.map(item => (
+  <div
+    key={item.id}
+    className="flex justify-between items-center gap-4 mb-6 p-4 border rounded"
+  >
+    <div className="flex items-center gap-4 flex-1">
+      <img
+        src={item.imgurl}
+        alt={item.name}
+        className="w-24 h-24 object-cover rounded"
+      />
+      <div>
+        <h2 className="text-xl font-semibold">{item.name}</h2>
+        <p>₹{item.price} each</p>
+      </div>
+    </div>
+
+    <div className="flex flex-col items-end gap-2">
+      <div className="flex items-center gap-2">
+        <button
+          onClick={() => decreaseQuantity(item.id)}
+          className="px-3 py-1 bg-red-500 text-white rounded"
+        >
+          -
+        </button>
+        <span className="text-lg font-semibold">{item.quantity}</span>
+        <button
+          onClick={() => increaseQuantity(item.id)}
+          className="px-3 py-1 bg-green-500 text-white rounded"
+        >
+          +
+        </button>
+      </div>
+      <p className="text-right">Subtotal: ₹{item.price * item.quantity}</p>
+    </div>
+  </div>
+))}
+
+<div className="flex justify-end">
+  <div className="text-right">
+    <hr className="my-4" />
+    <h2 className="text-2xl font-bold">Total: ₹{total}</h2>
+    <button
+      onClick={handlePlaceOrder}
+      className="bg-amber-600 text-white rounded-md px-6 py-2 mt-2"
+    >
+      Place Order
+    </button>
+  </div>
+</div>
         </>
       )}
     </div>
