@@ -98,7 +98,7 @@ export default function RestaurantPage() {
   if (!data) return notFound();
 
   return (
-    <div className='bg-white'>
+    <div className='bg-white text-black'>
       <Navbar />
       <div className="p-6">
         <h1 className="text-4xl font-bold text-center mb-2">{data.name}</h1>
