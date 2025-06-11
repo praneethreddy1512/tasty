@@ -143,7 +143,7 @@ export default function AdminHome() {
   return (
     <>
       <Navbar />
-      <div className="p-5">
+      <div className="p-5 bg-white">
         <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
 
         <button

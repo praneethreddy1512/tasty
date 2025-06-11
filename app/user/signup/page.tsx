@@ -82,7 +82,7 @@ export default function SignupPage() {
               <input
                 type="email"
                 id="email"
-                className="w-full border px-3 py-2 text-sm rounded bg-gray-100"
+                className="w-full border px-3 py-2 text-sm rounded text-black bg-gray-100"
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
