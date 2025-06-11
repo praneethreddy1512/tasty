@@ -70,8 +70,8 @@ const Cart: React.FC = () => {
             width={300}
             height={300}
           />
-          <h2 className="text-2xl font-semibold mt-4">No Orders Yet!</h2>
-          <p className="text-gray-600 mt-2">
+          <h2 className="text-2xl font-semibold text-black mt-4">No Orders Yet!</h2>
+          <p className="text-black mt-2">
             Your cart is empty. Add something from the menu.
           </p>
           <Link href="/user/home">
@@ -95,7 +95,7 @@ const Cart: React.FC = () => {
       />
       <div>
         <h2 className="text-xl font-semibold">{item.name}</h2>
-        <p>₹{item.price} each</p>
+        <p className='text-black'>₹{item.price} each</p>
       </div>
     </div>
 
@@ -115,7 +115,7 @@ const Cart: React.FC = () => {
           +
         </button>
       </div>
-      <p className="text-right">Subtotal: ₹{item.price * item.quantity}</p>
+      <p className="text-right text-black">Subtotal: ₹{item.price * item.quantity}</p>
     </div>
   </div>
 ))}
@@ -123,7 +123,7 @@ const Cart: React.FC = () => {
 <div className="flex justify-end">
   <div className="text-right">
     <hr className="my-4" />
-    <h2 className="text-2xl font-bold">Total: ₹{total}</h2>
+    <h2 className="text-2xl font-boldtext-black">Total: ₹{total}</h2>
     <button
       onClick={handlePlaceOrder}
       className="bg-amber-600 text-white rounded-md px-6 py-2 mt-2"

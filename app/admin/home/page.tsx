@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Navbar from '@/app/navbar/page';
+import AdminNavbar from '@/app/admin/adminnavbar/page';
 import Footer from '@/app/footer/page';
 
 interface Food {
@@ -142,7 +142,7 @@ export default function AdminHome() {
 
   return (
     <>
-      <Navbar />
+    <AdminNavbar/>
       <div className="p-5 bg-white text-black">
         <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
 
@@ -195,18 +195,23 @@ export default function AdminHome() {
             {restaurants.map((res) => (
               <div key={res._id} className="bg-white border rounded shadow p-3 relative group hover:scale-105 transition-transform">
                 <img src={res.imgurl} alt={res.name} className="w-full h-48 object-cover rounded mb-2" />
+                <div className='flex justify-between'>
+                <div>
                 <h3 className="text-lg font-semibold">{res.name}</h3>
-                <p className='bg-green-700 text-white w-15 rounded'>⭐ {res.rating}</p>
+                <p className='bg-green-700 text-white w-15 rounded pl-2'>★ {res.rating}</p>
+                </div>
+                <div >
+                <button className="mt-2 bg-orange-500 hover:bg-transparent hover:text-orange-500 border border-orange-500 text-white py-1 px-3 rounded" onClick={() => setMenuVisible(menuVisible === res._id ? null : res._id)}>
+                  {menuVisible === res._id ? 'Hide Menu' : 'Menu'}
+                </button>
+                </div>
+                </div>
 
-                <div className="absolute top-2 right-2 hidden group-hover:flex flex-col gap-1 bg-white p-2 rounded shadow z-10">
+                 <div className="absolute top-2 right-2 hidden group-hover:flex flex-col gap-1 bg-white p-2 rounded shadow z-10">
                   <button onClick={() => { setUpdateRestaurant(res); setUpdateImage(null); }} title="Edit">✏️</button>
                   <button onClick={() => handleDeleteRestaurant(res._id)} title="Delete">🗑️</button>
                   <button onClick={() => setShowFoodForms((prev) => ({ ...prev, [res._id]: !prev[res._id] }))} title="Add Item">➕</button>
                 </div>
-
-                <button className="mt-2 bg-orange-500 hover:bg-transparent hover:text-orange-500 border border-orange-500 text-white py-1 px-3 rounded" onClick={() => setMenuVisible(menuVisible === res._id ? null : res._id)}>
-                  {menuVisible === res._id ? 'Hide Menu' : 'Menu'}
-                </button>
 
                 {showFoodForms[res._id] && (
                   <div className="mt-2">

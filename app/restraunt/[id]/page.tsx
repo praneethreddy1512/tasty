@@ -101,13 +101,18 @@ export default function RestaurantPage() {
     <div className='bg-white text-black'>
       <Navbar />
       <div className="p-6">
-        <h1 className="text-4xl font-bold text-center mb-2">{data.name}</h1>
-        <p className="text-center text-gray-500 mb-6">Rating: ⭐ {data.rating}</p>
+        <h1 className="text-4xl font-bold text-black text-center mb-2">{data.name}</h1>
+        <p className="text-center text-black mb-6">Rating: ⭐ {data.rating}</p>
 
-        {data.menu.length === 0 ? (
-          <div className="text-center mt-12">
-            <p className="text-2xl font-semibold text-gray-600">🍽️ No Menu Items Available</p>
-            <p className="text-gray-400 mt-2">This restaurant hasn’t added any food items yet.</p>
+       {data.menu.length === 0 ? (
+          <div className="text-center mt-12 text-black">
+            <img
+              src="https://media.istockphoto.com/id/1166648548/vector/hand-with-tray.jpg?s=612x612&w=0&k=20&c=ML5D1yUTscCCjfVbX46cw0M46MMfxgw-b15qnKRt7_0="
+              alt="No Menu"
+              className="w-40 h-40 mx-auto mb-4"
+            />
+            <p className="text-2xl font-semibold">No Menu Items Available</p>
+            <p className="mt-2">This restaurant hasn’t added any food items yet.</p>
           </div>
         ) : (
           <div className="flex flex-col space-y-8">
@@ -116,7 +121,7 @@ export default function RestaurantPage() {
     key={index}
     className="flex justify-between items-start border-b pb-6 mx-4" 
   >
-    <div className="flex-1 pr-4 ml-4"> 
+    <div className="flex-1 pr-4 text-black ml-4"> 
       <h2 className="text-xl font-semibold mb-2">{item.name}</h2>
       <p className="text-gray-700 font-medium mt-1">₹{item.price}</p>
       <p className="text-white text-sm mt-1 p-1 rounded w-15 bg-green-700">⭐ {item.rating}</p>
