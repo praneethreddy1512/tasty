@@ -3,8 +3,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from '@/app/navbar/page';
 import Footer from '@/app/footer/page';
-import { motion } from 'framer-motion';
-import { Trash2, Pencil, Plus, MoreVertical } from 'lucide-react';
 
 interface Food {
   _id?: string;
@@ -38,17 +36,15 @@ export default function AdminHome() {
 
   const [loading, setLoading] = useState(true);
 
-
- const fetchRestaurants = async () => {
-  try {
-    setLoading(true);
-    const res = await axios.get<Restaurant[]>('/api/admin');
-    setRestaurants(res.data);
-  } finally {
-    setLoading(false);
-  }
-};
-
+  const fetchRestaurants = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.get<Restaurant[]>('/api/admin');
+      setRestaurants(res.data);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchRestaurants();
@@ -85,7 +81,6 @@ export default function AdminHome() {
 
   const handleUpdateRestaurant = async () => {
     if (!updateRestaurant) return;
-
     try {
       let imgurl = updateRestaurant.imgurl;
       if (updateImage) imgurl = await convertToBase64(updateImage);
@@ -151,14 +146,12 @@ export default function AdminHome() {
       <div className="p-5">
         <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
 
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+        <button
           onClick={() => setShowAddForm(!showAddForm)}
           className="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded mb-4"
         >
           {showAddForm ? 'Cancel' : 'Add Restaurant'}
-        </motion.button>
+        </button>
 
         {updateRestaurant && (
           <div className="bg-gray-100 p-4 rounded my-4 max-w-md">
@@ -191,96 +184,86 @@ export default function AdminHome() {
               </button>
             </div>
           </div>
-
         )}
 
         {loading ? (
-  <div className="flex justify-center items-center h-64">
-    <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-orange-500 border-opacity-100"></div>
-  </div>
-) : (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-    {restaurants.map((res) => (
-      <motion.div
-              key={res._id}
-              className="bg-white border rounded shadow p-3 relative group hover:scale-105 transition-transform"
-            >
-              <img src={res.imgurl} alt={res.name} className="w-full h-48 object-cover rounded mb-2" />
-              <h3 className="text-lg font-semibold">{res.name}</h3>
-              <p className='bg-green-700 text-white w-15 rounded'>⭐ {res.rating}</p>
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-orange-500 border-opacity-100"></div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {restaurants.map((res) => (
+              <div key={res._id} className="bg-white border rounded shadow p-3 relative group hover:scale-105 transition-transform">
+                <img src={res.imgurl} alt={res.name} className="w-full h-48 object-cover rounded mb-2" />
+                <h3 className="text-lg font-semibold">{res.name}</h3>
+                <p className='bg-green-700 text-white w-15 rounded'>⭐ {res.rating}</p>
 
-              <div className="absolute top-2 right-2 hidden group-hover:flex flex-col gap-1 bg-white p-2 rounded shadow z-10">
-                <button onClick={() => { setUpdateRestaurant(res); setUpdateImage(null); }}><Pencil className="text-orange-500 hover:scale-110" /></button>
-                <button onClick={() => handleDeleteRestaurant(res._id)}><Trash2 className="text-red-500 hover:scale-110" /></button>
-                <button onClick={() => setShowFoodForms((prev) => ({ ...prev, [res._id]: !prev[res._id] }))}><Plus className="text-blue-500 hover:scale-110" /></button>
-              </div>
-              <MoreVertical className="absolute top-2 right-2 group-hover:hidden text-gray-500" />
-
-              <button className="mt-2 bg-orange-500 hover:bg-transparent hover:text-orange-500 border border-orange-500 text-white py-1 px-3 rounded" onClick={() => setMenuVisible(menuVisible === res._id ? null : res._id)}>
-                {menuVisible === res._id ? 'Hide Menu' : 'Menu'}
-              </button>
-
-              {showFoodForms[res._id] && (
-                <div className="mt-2">
-                  <input placeholder="Food Name" className="w-full p-1 mb-1 border" onChange={(e) => setFoodForms((prev) => ({ ...prev, [res._id]: { ...prev[res._id], name: e.target.value } }))} />
-                  <input placeholder="Price" type="number" className="w-full p-1 mb-1 border" onChange={(e) => setFoodForms((prev) => ({ ...prev, [res._id]: { ...prev[res._id], price: parseFloat(e.target.value) } }))} />
-                  <input placeholder="Rating" type="number" className="w-full p-1 mb-1 border" onChange={(e) => setFoodForms((prev) => ({ ...prev, [res._id]: { ...prev[res._id], rating: parseFloat(e.target.value) } }))} />
-                  <input type="file" accept="image/*" className="w-full mb-1" onChange={(e) => handleFoodImageChange(e, res._id)} />
-                  <button onClick={() => handleAddFood(res._id)} className="bg-green-500 text-white py-1 px-3 rounded w-full">Add Food</button>
+                <div className="absolute top-2 right-2 hidden group-hover:flex flex-col gap-1 bg-white p-2 rounded shadow z-10">
+                  <button onClick={() => { setUpdateRestaurant(res); setUpdateImage(null); }} title="Edit">✏️</button>
+                  <button onClick={() => handleDeleteRestaurant(res._id)} title="Delete">🗑️</button>
+                  <button onClick={() => setShowFoodForms((prev) => ({ ...prev, [res._id]: !prev[res._id] }))} title="Add Item">➕</button>
                 </div>
-              )}
 
-              {menuVisible === res._id && res.menu.length > 0 && (
-                <div className="mt-3 text-sm">
-                  {res.menu.map((food) => {
-                    const key = `${res._id}-${food._id}`;
-                    const defaultFood = foodForms[key] || food;
+                <button className="mt-2 bg-orange-500 hover:bg-transparent hover:text-orange-500 border border-orange-500 text-white py-1 px-3 rounded" onClick={() => setMenuVisible(menuVisible === res._id ? null : res._id)}>
+                  {menuVisible === res._id ? 'Hide Menu' : 'Menu'}
+                </button>
 
-                    return (
-                      <motion.div
-                        key={food._id}
-                        className="mb-1 bg-gray-50 p-2 rounded hover:bg-gray-100"
-                      >
-                        <div className="flex justify-between items-center">
-                          <span>{food.name} - ₹{food.price} ⭐{food.rating}</span>
-                          <div className="flex gap-2">
-                            <button onClick={() => {
-                              setFoodForms((prev) => ({
-                                ...prev,
-                                [key]: {
-                                  name: food.name,
-                                  price: food.price,
-                                  rating: food.rating,
-                                  imgurl: food.imgurl,
-                                }
-                              }));
-                              setShowUpdateFoodForms((prev) => ({ ...prev, [key]: true }));
-                            }}><Pencil className="text-blue-500 hover:scale-110" /></button>
-                            <button onClick={() => handleDeleteFood(res._id, food._id)}><Trash2 className="text-red-500 hover:scale-110" /></button>
+                {showFoodForms[res._id] && (
+                  <div className="mt-2">
+                    <input placeholder="Food Name" className="w-full p-1 mb-1 border" onChange={(e) => setFoodForms((prev) => ({ ...prev, [res._id]: { ...prev[res._id], name: e.target.value } }))} />
+                    <input placeholder="Price" type="number" className="w-full p-1 mb-1 border" onChange={(e) => setFoodForms((prev) => ({ ...prev, [res._id]: { ...prev[res._id], price: parseFloat(e.target.value) } }))} />
+                    <input placeholder="Rating" type="number" className="w-full p-1 mb-1 border" onChange={(e) => setFoodForms((prev) => ({ ...prev, [res._id]: { ...prev[res._id], rating: parseFloat(e.target.value) } }))} />
+                    <input type="file" accept="image/*" className="w-full mb-1" onChange={(e) => handleFoodImageChange(e, res._id)} />
+                    <button onClick={() => handleAddFood(res._id)} className="bg-green-500 text-white py-1 px-3 rounded w-full">Add Food</button>
+                  </div>
+                )}
+
+                {menuVisible === res._id && res.menu.length > 0 && (
+                  <div className="mt-3 text-sm">
+                    {res.menu.map((food) => {
+                      const key = `${res._id}-${food._id}`;
+                      const defaultFood = foodForms[key] || food;
+
+                      return (
+                        <div key={food._id} className="mb-1 bg-gray-50 p-2 rounded hover:bg-gray-100">
+                          <div className="flex justify-between items-center">
+                            <span>{food.name} - ₹{food.price} ⭐{food.rating}</span>
+                            <div className="flex gap-2">
+                              <button onClick={() => {
+                                setFoodForms((prev) => ({
+                                  ...prev,
+                                  [key]: {
+                                    name: food.name,
+                                    price: food.price,
+                                    rating: food.rating,
+                                    imgurl: food.imgurl,
+                                  }
+                                }));
+                                setShowUpdateFoodForms((prev) => ({ ...prev, [key]: true }));
+                              }} title="Edit">✏️</button>
+                              <button onClick={() => handleDeleteFood(res._id, food._id)} title="Delete">🗑️</button>
+                            </div>
                           </div>
+                          {showUpdateFoodForms[key] && (
+                            <div className="bg-gray-100 p-2 rounded mt-1">
+                              <input value={defaultFood.name} placeholder="Name" className="w-full p-1 mb-1 border" onChange={(e) => setFoodForms((prev) => ({ ...prev, [key]: { ...prev[key], name: e.target.value } }))} />
+                              <input value={defaultFood.price} type="number" placeholder="Price" className="w-full p-1 mb-1 border" onChange={(e) => setFoodForms((prev) => ({ ...prev, [key]: { ...prev[key], price: parseFloat(e.target.value) } }))} />
+                              <input value={defaultFood.rating} type="number" placeholder="Rating" className="w-full p-1 mb-1 border" onChange={(e) => setFoodForms((prev) => ({ ...prev, [key]: { ...prev[key], rating: parseFloat(e.target.value) } }))} />
+                              <input type="file" accept="image/*" className="w-full mb-1" onChange={(e) => handleFoodImageChange(e, res._id, food._id)} />
+                              <button onClick={() => handleUpdateFood(res._id, food)} className="bg-green-500 text-white py-1 px-3 rounded w-full">Update Item</button>
+                            </div>
+                          )}
                         </div>
-                        {showUpdateFoodForms[key] && (
-                          <div className="bg-gray-100 p-2 rounded mt-1">
-                            <input value={defaultFood.name} placeholder="Name" className="w-full p-1 mb-1 border" onChange={(e) => setFoodForms((prev) => ({ ...prev, [key]: { ...prev[key], name: e.target.value } }))} />
-                            <input value={defaultFood.price} type="number" placeholder="Price" className="w-full p-1 mb-1 border" onChange={(e) => setFoodForms((prev) => ({ ...prev, [key]: { ...prev[key], price: parseFloat(e.target.value) } }))} />
-                            <input value={defaultFood.rating} type="number" placeholder="Rating" className="w-full p-1 mb-1 border" onChange={(e) => setFoodForms((prev) => ({ ...prev, [key]: { ...prev[key], rating: parseFloat(e.target.value) } }))} />
-                            <input type="file" accept="image/*" className="w-full mb-1" onChange={(e) => handleFoodImageChange(e, res._id, food._id)} />
-                            <button onClick={() => handleUpdateFood(res._id, food)} className="bg-green-500 text-white py-1 px-3 rounded w-full">Save</button>
-                          </div>
-                        )}
-                      </motion.div>
-                    );
-                  })}
-                </div>
-              )}
-            </motion.div>     
-    ))}
-  </div>
-)}      
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       <Footer />
     </>
   );
 }
-
-
