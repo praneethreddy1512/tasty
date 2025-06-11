@@ -142,7 +142,7 @@ export default function AdminHome() {
 
   return (
     <>
-    <AdminNavbar/>
+      <AdminNavbar />
       <div className="p-5 bg-white text-black">
         <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
 
@@ -152,6 +152,37 @@ export default function AdminHome() {
         >
           {showAddForm ? 'Cancel' : 'Add Restaurant'}
         </button>
+
+        {showAddForm && (
+          <div className="bg-gray-100 p-4 rounded my-4 max-w-md">
+            <h2 className="text-lg font-semibold mb-2">Add Restaurant</h2>
+            <input
+              value={addForm.name}
+              onChange={(e) => setAddForm({ ...addForm, name: e.target.value })}
+              className="w-full mb-2 p-2 border"
+              placeholder="Restaurant Name"
+            />
+            <input
+              value={addForm.rating}
+              onChange={(e) => setAddForm({ ...addForm, rating: e.target.value })}
+              className="w-full mb-2 p-2 border"
+              placeholder="Rating"
+              type="number"
+            />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setSelectedImage(e.target.files?.[0] || null)}
+              className="w-full mb-2"
+            />
+            <button
+              onClick={handleAddRestaurant}
+              className="bg-green-500 text-white py-2 w-full rounded"
+            >
+              Add Restaurant
+            </button>
+          </div>
+        )}
 
         {updateRestaurant && (
           <div className="bg-gray-100 p-4 rounded my-4 max-w-md">
@@ -195,19 +226,22 @@ export default function AdminHome() {
             {restaurants.map((res) => (
               <div key={res._id} className="bg-white border rounded shadow p-3 relative group hover:scale-105 transition-transform">
                 <img src={res.imgurl} alt={res.name} className="w-full h-48 object-cover rounded mb-2" />
-                <div className='flex justify-between'>
-                <div>
-                <h3 className="text-lg font-semibold">{res.name}</h3>
-                <p className='bg-green-700 text-white w-15 rounded pl-2'>★ {res.rating}</p>
-                </div>
-                <div >
-                <button className="mt-2 bg-orange-500 hover:bg-transparent hover:text-orange-500 border border-orange-500 text-white py-1 px-3 rounded" onClick={() => setMenuVisible(menuVisible === res._id ? null : res._id)}>
-                  {menuVisible === res._id ? 'Hide Menu' : 'Menu'}
-                </button>
-                </div>
+                <div className="flex justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold">{res.name}</h3>
+                    <p className="bg-green-700 text-white w-15 rounded pl-2">★ {res.rating}</p>
+                  </div>
+                  <div>
+                    <button
+                      className="mt-2 bg-orange-500 hover:bg-transparent hover:text-orange-500 border border-orange-500 text-white py-1 px-3 rounded"
+                      onClick={() => setMenuVisible(menuVisible === res._id ? null : res._id)}
+                    >
+                      {menuVisible === res._id ? 'Hide Menu' : 'Menu'}
+                    </button>
+                  </div>
                 </div>
 
-                 <div className="absolute top-2 right-2 hidden group-hover:flex flex-col gap-1 bg-white p-2 rounded shadow z-10">
+                <div className="absolute top-2 right-2 flex md:hidden group-hover:flex flex-col gap-1 bg-white p-2 rounded shadow z-10 transition-opacity opacity-100 lg:opacity-0 lg:group-hover:opacity-100">
                   <button onClick={() => { setUpdateRestaurant(res); setUpdateImage(null); }} title="Edit">✏️</button>
                   <button onClick={() => handleDeleteRestaurant(res._id)} title="Delete">🗑️</button>
                   <button onClick={() => setShowFoodForms((prev) => ({ ...prev, [res._id]: !prev[res._id] }))} title="Add Item">➕</button>
@@ -272,3 +306,4 @@ export default function AdminHome() {
     </>
   );
 }
+
