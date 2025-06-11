@@ -6,13 +6,13 @@ import Link from 'next/link';
 export default function Home() {
   return (
     <div
-      className="h-screen w-full flex flex-col justify-center items-center bg-cover bg-black bg-center relative text-white"
+      className="h-screen w-full flex flex-col justify-center items-center bg-cover bg-center relative text-white"
     //   style={{
     //     backgroundImage: `url('https://img.freepik.com/free-photo/flat-lay-arrangement-with-salad-box-sauce_23-2148247883.jpg')`,
     //   }}
     >
       <div className="z-10 text-center">
-        <h1 className="text-5xl font-bold mb-8 drop-shadow-lg">
+        <h1 className="text-5xl text-black font-bold mb-8 drop-shadow-lg">
           Welcome to <span className="text-orange-400">Tasty Kitchen</span>
         </h1>
 

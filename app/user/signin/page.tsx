@@ -56,7 +56,7 @@ export default function SigninPage() {
                 <input
                   type="text"
                   id="username"
-                  className="w-full border px-3 py-2 text-sm rounded bg-gray-100"
+                  className="w-full border px-3 py-2 text-sm rounded text-black bg-gray-100"
                   onChange={(e) => setname(e.target.value)}
                 />
               </div>
@@ -67,7 +67,7 @@ export default function SigninPage() {
                 <input
                   type="password"
                   id="password"
-                  className="w-full border px-3 py-2 text-sm rounded bg-gray-100"
+                  className="w-full border px-3 py-2 text-sm rounded text-black bg-gray-100"
                   onChange={(e) => setpass(e.target.value)}
                 />
               </div>
